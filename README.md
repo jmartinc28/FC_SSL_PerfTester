@@ -7,7 +7,7 @@ This project is based on HybirdCorp (https://github.com/HybirdCorp/docker-fortic
 ## How it works
 The container uses the forticlientsslvpn_cli linux binary to manage ppp interface, all of the container traffic is routed through the VPN.
 
-IPerf is installed on the container so you can generate traffic, the Launch scrip will execute IPerf client on the Container and IPerf Server on the Host.
+The perftest_launch.sh script will execute iperf Server on the Host and the container which opens the SSL VPN then run an iperf client on the same port as the iperf server for this thread.
 
 ## Automation Scripts
 perftest_launch.sh will launch one or multiple instances for the docker container and the iperf server on different ports, screen is used to background the commands, you can check launched process with screen, example
@@ -26,10 +26,20 @@ CTRL+A CTRL+D
 perftest_killscreens.sh will send CTRL+C command to every screen session killing all sessions.
 
 ## Modify the Test
-You can change iperf commands on start.sh file, you will need to rebuild the container.
+Update perftest_launch.sh with the connection information set on the variables at the beginning
+```bash
+#Change to the lowest port to use by iperf, each new container will increment port by 1
+basePort=5201 
+#VPN Server IP / Username / Password
+fgtVPNIP=10.20.28.2:10443
+fgtVPNUser=vpnuser
+fgtVPNPass=VPNpassw0rd
+```
+
+To change the iperf parameters modify start.sh file, you will need to rebuild the container for the changes to take effect.
 
 ## Installation
-To run the script you will need a Linux VM with the following dependences
+To run the script you will need a Linux VM (Host) with the following dependencies
 * Docker
 * bash
 * iperf
