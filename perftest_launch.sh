@@ -30,7 +30,7 @@ do
 	sleep 1
 
 	#iperf Client on Container
-	screen -S $c.iperfc -d -m docker exec -ti "container.$c" "sleep 20 && iperf3 -t 1200 -b 5m -c $iperfSIP -p ${c}"
+	screen -S $c.iperfc -d -m docker exec -ti "container.$c" /bin/bash -c "echo 'Sleeping...' && sleep 20 && iperf3 -t 1200 -b 5m -c $iperfSIP -p ${c}"
 
 	#mpstat
 done
