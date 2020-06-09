@@ -7,16 +7,24 @@ This project is based on HybirdCorp (https://github.com/HybirdCorp/docker-fortic
 ## How it works
 The container uses the forticlientsslvpn_cli linux binary to manage ppp interface, all of the container traffic is routed through the VPN.
 
-The perftest_launch.sh script will execute iperf Server on the Host and the container which opens the SSL VPN then run an iperf client on the same port as the iperf server for this thread.
+The `perftest_launch.sh` script will execute one or many
+1. iperf3 Server on the Host with variable listening port number
+2. SSL VPN container that open ssl vpn connection to FortiGate 
+3. iperf3 client on the SSL VPN container connecting to the iperf3 Server variable port
+
+The `perftest_killscreens.sh` will kill all Screen Sessions.
 
 ## Automation Scripts
-perftest_launch.sh will launch one or multiple instances for the docker container and the iperf server on different ports, screen is used to background the commands, you can check launched process with screen, example
+`perftest_launch.sh` will launch one or multiple instances for the docker container and the iperf server on different ports, screen is used to background the commands, you can check launched process with screen, example
+
 ```bash
 #Query opened Screens
 screen -ls
 There are screens on:
-        5716.5202.ssl   (06/08/2020 01:44:44 PM)        (Detached)
-        5710.5202.iperf (06/08/2020 01:44:44 PM)        (Detached)
+        5716.5202.ssl   (06/08/2020 01:44:44 PM)        (Detached) #Screen session for SSL Container on port 5202
+        5710.5202.iperfs (06/08/2020 01:44:44 PM)        (Detached) #Screen session for iperf server on port 5202
+        5710.5202.iperfc (06/08/2020 01:44:44 PM)        (Detached) #Screen session for iperf client on port 5202
+#Notice the screen IDs (5701.5202.ssl), the first number is system generated, the second number is the port number and the text is the function of this screen session.
 
 #Attach to a Screen session
 screen -r ID
@@ -26,11 +34,11 @@ CTRL+A CTRL+D
 
 ```
 
-perftest_killscreens.sh will send CTRL+C command to every screen session killing all sessions.
+`perftest_killscreens.sh` will send CTRL+C command to every screen session killing all sessions.
 
 ## Modify the Test
 ### Update Variables
-Update perftest_launch.sh with the connection information set on the variables at the beginning
+Update `perftest_launch.sh` with the connection information set on the variables at the beginning
 ```bash
 #Change to the lowest port to use by iperf, each new container will increment port by 1
 basePort=5201 
@@ -42,7 +50,7 @@ fgtVPNPass=VPNpassw0rd
 iperfSIP=10.20.28.228
 ```
 ### Change Traffic Generation Parameters (iperf3)
-To change the iperf parameters modify perftest_launch.sh file under iperf Client section and update with your parameters.
+To change the iperf parameters modify `perftest_launch.sh` file under iperf Client section and update with your parameters.
 
 ## Installation
 To run the script you will need a Linux VM (Host) with the following dependencies
