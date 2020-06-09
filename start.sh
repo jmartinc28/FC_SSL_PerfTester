@@ -11,9 +11,9 @@ for iface in $(ip a | grep eth | grep inet | awk '{print $2}'); do
   iptables -t nat -A POSTROUTING -s "$iface" -j MASQUERADE
 done
 
-echo "------------ Starting IPerf3 ------------"
-nohup sleep 30 && iperf3 -t 1200 -b 5m -c 10.20.28.228 -p ${IPERFPORT} &
-nohup sleep 30 && iperf3 -t 1200 -b 5m -c 10.20.28.228 -p ${IPERFPORT} -R &
+#echo "------------ Starting IPerf3 ------------"
+#nohup sleep 30 && iperf3 -t 1200 -b 5m -c 10.20.28.228 -p ${IPERFPORT} &
+#nohup sleep 30 && iperf3 -t 1200 -b 5m -c 10.20.28.228 -p ${IPERFPORT} -R &
 
 while [ true ]; do
   echo "------------ VPN Starts ------------"
