@@ -56,7 +56,7 @@ To change the iperf parameters modify `perftest_launch.sh` file under iperf Clie
 To run the script you will need a Linux VM (Host) with the following dependencies
 * Docker
 * bash
-* iperf
+* iperf3
 * 2 Network Interfaces
 
 A common implementation will look like this
