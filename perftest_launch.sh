@@ -32,6 +32,9 @@ do
 	#iperf Client on Container
 	screen -S $c.iperfc -d -m docker exec -ti "container.$c" /bin/bash -c "echo 'Sleeping...' && sleep 20 && iperf3 -t 1200 -b 5m -c $iperfSIP -p ${c}"
 
+	#Alternative to iperf we can use wget with a BP Server
+	#screen -S $c.iperfc -d -m docker exec -ti "container.$c" /bin/bash -c "while true; do nohup wget --delete-after --timeout=2 --tries=1 --no-cache -nH -T 60 http://9.2.1.10; done &"
+
 	#mpstat
 done
 
